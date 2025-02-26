@@ -1,0 +1,74 @@
+Low-Level Features
+    Low-level features are basic, simple, and often local patterns or structures present in the input data.
+    Edges, corners, and textures are typical low-level features in images. 
+    Extracted in the early layers of the CNN through convolutional and pooling operations.
+    Low-level features capture fundamental information and details in the input
+
+High-Level Features
+    High-level features are more complex and abstract representations that result from combining and hierarchically organizing low-level features.
+    In images, high-level features could represent more complex structures like shapes, object parts, or even entire objects. 
+    Constructed in deeper layers of the CNN, combining information from lower layers through additional convolutions and pooling operations.
+    High-level features capture more abstract and contextually rich information, enabling the network to make more sophisticated decisions.
+
+Sparse-connectivity: 
+  A single element in the feature map is connected to a small patch of the real image.
+
+Parameter-sharing: 
+  The weights are shared for each patches in the image.
+
+stride
+  Stride is the number of pixels the convolution filter moves (or "slides") across the input image at each step. 
+  
+  (LEC)The term "stride" refers to the step size used when applying the convolutional filter or 
+  kernel to the input data. The stride determines how much the filter is shifted across 
+  the input data at each step during the convolution operation.  A large stride 
+  reduces the spatial dimensions of the output feature map.
+
+
+The SoftMax function converts raw outputs into probabilities. These represents the likelihood of 
+each class, ensuring that the sum of probabilities is equal to 1. And in classifications it allows 
+you to choose the class with the highest probability.
+
+Categorical Cross-Entropy Loss calculates the difference between the predicted probability and 
+the actual distribution.  It is mainly used for multi-class classifications. This calculates how well 
+the model's predicted probabilities match the true class label.
+
+
+Zero-Padding(same paddding)
+    Zero padding adds extra pixels filled with zeros around the image and it helps to maintain the 
+    same spatial dimensions as the input and it keeps the image size unchanged
+
+    (lec)Padding in CNN refers to the process of adding extra pixels (usually zeros) around the input data 
+    before applying the convolution operation. 
+
+Valid-Padding
+  does not add extra pixels, and it shrinks the input image after each convolution. This helps keep 
+  important details from the edges and ensures all parts of the image are processed equally. 
+
+  (lec)In the valid convolution (also known as "no padding" or "valid padding"), no padding is 
+  added to the input data.
+
+Subsampling
+  Subsampling is a down-sampling operation applied to the feature 
+  maps produced by convolutional layers.
+  Objective:  Reducing the spatial dimensions of the feature maps 
+              while retaining the most important information.
+
+Pooling 
+  Pooling is a down-sampling operation that reduces the spatial dimensions of a feature map while 
+  retaining its most important information. It helps make the model more efficient, reduces 
+  overfitting, and it reduces computational complexity. 
+
+Max-pooling
+  The maximum value within each local region is retained, and the rest are discarded. 
+Mean-pooling  
+  The average value within each local region is computed and used to represent the region.
+
+
+Hyperparameters 
+  filters
+  kernel_size
+  padding
+  strides 
+  activation
+
