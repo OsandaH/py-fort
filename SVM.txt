@@ -1,0 +1,71 @@
+SVM 
+  SVMs aim to find the optimal hyperplane that separates data points of different 
+  classes while maximizing the margin between the classes
+
+Kernel Function 
+    The kernel function transforms non-linear relationships into linear relationships, making 
+    them accessible for algorithms that traditionally only handle linear data. It transforms data 
+    into a higher dimensional space to make it easier to classify or analyze. 
+
+Kernel Trick  
+    The Kernel Trick is a method used to solve complex, non-linear problems in machine 
+    learning by implicitly working in a higher-dimensional space. Instead of explicitly 
+    transforming the data to a higher dimension. This allows algorithms to find patterns and 
+    create decision boundaries that are not possible in the original space. 
+    The Kernel Trick allows machine learning models to handle non-linear data efficiently by 
+    performing operations in a transformed space without the cost of explicitly computing the 
+    transformation. 
+
+Bias 
+    Bias is an error that occurs due to incorrect and simple assumptions made during the process. 
+    The assumptions make the model easier to understand but it cannot capture the complexities 
+    of data. High bias causes underfitting where the model fails to capture important trends. 
+
+Variance 
+    Variance is an error due to the model’s responsiveness to changes in the training data. High 
+    variance can cause the model to capture noise in the data, leading to overfitting and poor 
+    generalization to new data. Variance measures how much the model's predictions change 
+    when trained on different subsets of the training data. 
+
+Decision Boundary  
+    A decision boundary in machine learning is a line or surface that separates different classes 
+    in the data. It helps the model decide which class a data point belongs to based on its 
+    position. Simple models create straight boundaries, while complex models can create curved ones. 
+
+Optimal Hyperplane 
+    Optimal Hyperplane is the decision boundary that best separates different classes in a dataset. 
+    It is the decision boundary which has the largest distance from both classes. It maximizes the 
+    margin between the closest points of the classes. 
+
+Support Vectors:
+    Support vectors are the points closest to the hyperplane. 
+    They play a crucial role in defining the separating line in SVM.
+
+Bias/ Variance Trade Off
+    The trade-off arises because decreasing bias often increases variance, and vice versa.
+
+Margin 
+    Margin is the distance between the hyperplane and the data points closest to it. A larger 
+    margin generally leads to better generalization and lower risk of overfitting.
+
+Hyperparameters 
+
+C (Regularization Parameter)
+    C controls the trade-off between model complexity and accuracy. 
+    A higher C value focuses on minimizing training error, potentially leading to overfitting.
+
+Kernel
+    The kernel defines how the data is transformed into a higher-dimensional space. 
+    Different kernels allow the SVM to capture different types of relationships in the data. 
+    (kernel inputs – linear, polynomial, RBF) 
+
+Degree
+    Degree specifies the degree of the polynomial function used in the kernel. Higher 
+    degrees allow for more complex transformations but may lead to overfitting if not balanced.
+
+Gamma
+    Gamma determines the influence of individual data points on the decision boundary. A 
+    high gamma value leads to a more sensitive model, capturing finer details, while a low gamma 
+    simplifies the boundary. 
+
+
