@@ -1,0 +1,73 @@
+What is a Recurrent Neural Network (RNN)
+    A Recurrent Neural Network is a type of deep learning model designed for sequential or 
+    time-series data. It uses the output of a previous step as input for the current step and 
+    allows to recognize patterns and make predictions based on past information. 
+
+    RNN has loops in its structure which allows to send information across the time step 
+    however in FNN (feedforward Neural Network) information flows only in one direction. 
+    RNN has a hidden state which saves past data, but FNN do not have memory to store past data.
+
+hidden states” in RNNs
+    Hidden state is a memory that stores information about previous inputs and passes it to 
+    the next steps.  
+    RNNs are important for processing sequences because they remember past information 
+    and use it to understand the next steps. This helps in tasks like speech recognition, 
+    predicting the next word in a sentence, and forecasting trends. 
+
+Vanishing Gradient Problem  
+    The vanishing gradient problem occurs when the gradients which are used to update the 
+    network's weights become extremely small as they are propagated backward through 
+    many time steps. This reduces the effectiveness of weight updates. This makes the 
+    network learn much more slowly.
+
+    Vanishing gradient problem will slow down or stops the learning process because early 
+    layers weights are updated minimally.
+
+Exploding Gradient Problem 
+    The gradients which are used to update the networks weight can also become extremely 
+    large. This will make the weight updates unstable, and the model parameters diverge to 
+    very large values.
+
+    Exploding gradients will make the weight updates unstable. When the gradient becomes 
+    large the parameters of the model becomes unstable.
+
+ LSTM
+    Long Short-Term Memory (LSTM) handles the vanishing gradient problem using 3 gates 
+    that control how information flows through the network. Input gate controls which new 
+    information should be added. output gate determines which information from the cell 
+    state should be output. Forget gate determines which information from the previous time 
+    step should be ignored. These gates update a cell state that helps keep important 
+    information over long time steps while the gates allows the model to selectively update or 
+    forget the parts of data. This prevents the gradients from getting too small.  
+
+Input gate – controls which new information should be added.  
+output gate – determines which information from the cell state should be output.  
+Forget gate – determines which information from the previous time step should be ignored.
+
+Cell state acts as a memory that can carry information across many time-steps. It helps 
+preserve long term dependencies by allowing information to flow through the network 
+without losing its strength over time. The gates control what information is kept, added or 
+removed from the cell state. This prevents losing important data.
+
+The forget gate decide what information to keep or remove by using a sigmoid activation 
+function. It takes the previous hidden state and the current input, processes them through 
+a neural network layer, and outputs a value between 0 and 1. If the output is close to 0 it 
+is forgotten and if it’s close to 1 it is kept. This removes unimportant details while 
+keeping the useful details for future steps.
+
+
+SEQ_LENGTH – Number of previous characters considered before predicting the next character. 
+STEP_SIZE – Number of characters the text shifts forward when selecting the next section for training.
+
+SoftMax converts the output values into probabilities. The sum of all probabilities is equal to 1. 
+And the model needs to predict the next character from a set of possible characters, and it allows 
+to select the most probable character using the probabilities.  
+
+
+Categorical cross entropy can solve multi-class classification problems. But the mean absolute 
+error is used for regression problems, where it predicts continuous values. In this problem the 
+output values are probabilities which aren’t continuous therefore the categorical cross entropy 
+function is used. And it measures how well the predicted probability distribution matches the 
+actual one hot encoded label. It reduces incorrect predictions and helps the model learn fast. 
+
+
