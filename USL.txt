@@ -1,0 +1,52 @@
+Advantages of Clustering
+    Useful when identifying outliers or anomalies in data. 
+    Helps by discovering groups of clusters in the data.
+    Defines boundaries that distinguish normal data points from outliers.
+    Enables the identification of patterns that deviate from the norm.
+    Aids in understanding the structure of the data and highlighting unusual data points
+
+Types of Clustering Methods
+    Centroid-based method
+    Density-Based Clustering
+    Distribution Model-Based Clustering
+    Hierarchical Clustering
+    Fuzzy Clustering
+
+Clustering algorithms like K-Means and Gaussian Mixture Models (GMM) can be used 
+for anomaly detection by identifying data points that do not fit well within any cluster. 
+
+K-means Clustering
+  K-Means is a partitioning method that divides a dataset into '𝑘' clusters
+  Objective is to minimize the sum of squared distances within each cluster
+
+  Algo:
+    Initialize - choose initial 'k' centroids randomly 
+    Assign - assign each data point to the nearest controid 
+    Expectation Step 
+    Maximization Step 
+    Update - Recalculate the centroids based on the assigned data points mean/covariance/mixinf coefficient
+    Repeat - Iterate steps 2-3 until convergence (centroids no longer change significantly).
+
+Gaussian Mixture Models
+  GMM assigns a probability to each data point for how likely it is to belong to each 
+  cluster. Points with low probabilities for all clusters are seen as anomalies because they 
+  don’t fit well with any of the patterns in the model.    
+
+  advantages
+    situations. While K-Means assumes all clusters are round and the same size, GMM 
+    can handle clusters of different shapes, sizes, and orientations. 
+
+  Maximum Likelihood Estimation (MLE)
+      The goal of MLE is to find the parameter values that maximize the likelihood function,
+      which measures the probability of observing the given data under a specific model.
+
+Expectation Maximization Algorithm
+     Likelihood increases with each iteration if a change occurs.
+
+Mutual Information (MI)
+    Mutual Information is often used to assess the similarity between the true labels of a dataset and the 
+    cluster assignments obtained from a clustering algorithm.
+
+Silhouette Score
+ Metric to assess the quality of clustering techniques, including K-Means.
+ Measures the degree of separation between clusters.
