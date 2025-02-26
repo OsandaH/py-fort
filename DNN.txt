@@ -1,23 +1,62 @@
-• Number of layers  
-• Number of neurons per layer 
-• Activation Function  
-  o ReLU 
-  o Sigmoid 
-  o Tanh 
-  o Softmax 
-• Learning rate 
-• Optimizers or Gradient Decent Algorithms 
-  o Stochastic Gradient Decent (SGD) 
-  o Adaptive Moment Estimation (Adam) 
-  o Root Mean Square Propagation (RMSprop) 
-  o Adaptive Gradient Algorithm (Adagrad) 
-• Batch Size  
-• Number of Epochs 
-• Cost Function  
-  o Mean Squared Error 
-  o Mean Absolute Error 
-  o Cross Entropy Cost Function  
-  o Mean Squared Logarithmic Error  
-  o Binary Cross Entropy  
-  o Categorical Cross Entropy 
-• Dropout Rate 
+Number of layers  
+Number of neurons per layer 
+Activation Function  
+    ReLU 
+    Sigmoid 
+    Tanh 
+    Softmax 
+Learning rate 
+Optimizers or Gradient Decent Algorithms 
+    Stochastic Gradient Decent (SGD) 
+    Adaptive Moment Estimation (Adam) 
+    Root Mean Square Propagation (RMSprop) 
+    Adaptive Gradient Algorithm (Adagrad) 
+Batch Size  
+Number of Epochs 
+Cost Function  
+    Mean Squared Error 
+    Mean Absolute Error 
+    Cross Entropy Cost Function  
+    Mean Squared Logarithmic Error  
+    Binary Cross Entropy  
+    Categorical Cross Entropy 
+Dropout Rate 
+
+Epochs  
+  An epoch is when the model goes through the entire training dataset once. During this time, it 
+  updates its weights and biases based on the errors it makes. And it makes sure that the learning 
+  process covers all data points at once. 
+
+Batch size 
+  Batch size is the number of samples processed together in one iteration during training. Smaller 
+  batch sizes allow for more frequent updates and can help avoid overfitting, while larger batch 
+  sizes speed up training but may require more memory. 
+
+Optimizer 
+  An optimizer is an algorithm used to adjust the weights and biases of a neural network to 
+  minimize the cost function. 
+  Optimizers – SGD, RMSprop, Adagrad, Adam
+
+Activation function  
+    Activation function introduces non-linearity into the neural network. It allows the neural network 
+    models to learn complex patterns and relationships in data. It applies a mathematical function to 
+    the input of each neuron to decide if the neuron should be activated or not.  
+    Activation functions – ReLU, Sigmoid, Tanh, Softmax 
+
+Cost function 
+    A cost function measures the error between the predicted output of a neural network and the 
+    actual target value. It gives a single value that represents how well the network is performing, 
+    with smaller values indicating better performance. 
+    Cost functions – Mean Squared Error, Mean Absolute Error, Cross Entropy Cost Function
+
+Feedforward
+    The process of passing input data through a neural network, layer by layer, to generate predictions. 
+    Each neuron computes a weighted sum of inputs, adds a bias, applies an activation function, and forwards 
+    the result to the next layer until reaching the output.  
+
+Backpropagation
+    A technique to minimize error by propagating the loss backward through the network. 
+    It calculates the gradient of the loss function, determining how each weight contributes to the error, 
+    and updates weights to improve accuracy.
+
+
