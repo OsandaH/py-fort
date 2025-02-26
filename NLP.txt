@@ -1,1 +1,118 @@
 
+Tokenization
+  In Natural Language Processing tokenization is the process of breaking down a piece of 
+  text into smaller units or tokens. These tokens can be words, phrases, punctuation marks, 
+  or even individual characters.
+
+  Tokenization creates a structure that can be easily processed by a computer, and it is the 
+  first step of representing text data in a machine-readable format. 
+
+improve the accuracy of NLP-based models
+    Lowercasing – converting all the text to lowercase can help reduce the vocabulary 
+                  size and increase the accuracy in certain models  
+    Stemming and Lemmatization – reduce the size of the vocabulary and eliminate redundant                                         information 
+        Stemming – remove suffixes from a word to obtain its root form. 
+        Lemmatization – converts a word to its base form using a dictionary of known words.  
+
+    Stopword Removal – common words like ‘the’, ‘and’ are not relevant for text 
+                      analysis. Removing these words can improve the accuracy of 
+                      models and reduce the dimensionality of the data
+
+    Normalization – This convers the common slang and abbreviations to full form. 
+
+Word–based tokenizer. 
+
+  Splitting the raw text into words, by splitting on spaces or other specific rules like
+  punctuation.
+
+  Different forms of the same word are considered as separate tokens. It increases the 
+  vocabulary size.
+  It will struggle to process rare words or new words to the vocabulary.
+  It is sensitive to punctuation.  
+
+Character-based tokenizer. 
+  Splitting raw text into individual characters. Each character is considered as a separate
+  token.   
+
+Character-based tokenizer vs Word–based tokenizer. 
+  Character-based tokenizers have a lower vocabulary size than word-based tokenizers.
+
+  Handling rare words is easier with character-based tokenizers because every word 
+  can be represented as a sequence of characters
+
+  Character-based tokenizers take longer to train because they produce more tokens, 
+  while word-based tokenizers train faster and work more efficiently.  
+
+chalenges in Character-based tokenizer
+    Sequence have more tokens which increases memory usage and processing time  
+    Characters do not carry meaning, so the model must learn word structures from 
+    character sequences.  
+    Longer sequences require more time and data, making the training process slower. 
+    Poor performance on small datasets. 
+    Frequently used words are split into multiple characters.  
+
+Subword-based tokenizer. 
+    A subword-based tokenizer splits rare and complex words into meaningful subwords 
+    while keeping the common words as single tokenizers. This method is a combination of 
+    word-based and character-based tokenizers. 
+
+sub word vs character vs word
+  
+  Subword-based tokenizers have a vocabulary size that is larger than character
+  based tokenizers but smaller than word-based tokenizers. And it creates 
+  moderately long sequences that is smaller than character-based tokenizers and 
+  larger than word-based tokenizers. 
+  
+  Subword-based tokenizers protect the meaning of the tokens better than character
+  based tokenizers, but not as well as word-based tokenizers. 
+  
+  Subword-based tokenizers are faster than character-based tokenizers and slower 
+  than word-based tokenizers when it comes to training. 
+
+Advantages of  Subword-based tokenizers
+
+    Subword-based tokenizers can handle rare, complex and unseen words into 
+    known subwords this reduces the out of vocabulary problem. 
+
+    Subword-based tokenizers protects the meaning of the words and split the suffixes 
+    and prefixes.  
+
+    Works well across different languages. 
+
+
+Word2Vec Word Embeddings
+
+    Word embedding is a technique used to represent words as numerical vectors in natural 
+    language processing. These vectors represent the meaning, context, and relationship 
+    between words in a way that machines can understand. 
+
+  It uses a context based probabilistic approach. It gives the probability of the word 
+  based on the context.  
+  It is simple and scalable. It uses only one hidden layer and the neural networks  
+  It works well with deep learning models.  
+
+Continuous-bag-of-word (CBOW) – predicts the focus word from a given context.  
+Skip-gram – predicts the context from a given focus word.  
+
+In the CBOW method, the input layer gets the one-hot vectors of the surrounding words. 
+These vectors are combined and sent to the hidden layer, where they are turned into a 
+smaller, more useful form. The output layer uses this new form to guess the target word. 
+The model learns by adjusting itself based on how close its guess is to the correct word.
+
+The SoftMax function turns a list of numbers into probabilities by scaling them between 
+0 and 1. It makes each number bigger by taking its exponent. Then, it adds up all these 
+values and divides each by the total to get probabilities that add up to 1. The bigger 
+numbers will have a higher chance of being chosen. 
+
+The SoftMax function is used as the activation function in models because it turns the 
+model’s raw output into probabilities. This means the model can give probability for each 
+possible word making it easier to pick the most likely one. SoftMax makes sure that the 
+sum of all probabilities equals one. It also helps the model choose the word with the 
+highest probability. 
+
+In the Skip-gram model, the input layer represents the focus word as a one-hot vector. 
+This vector is sent to the hidden layer, which turns it into a smaller, dense representation. 
+The hidden layer helps predict the context words around the focus word. The output layer 
+guesses the context words from all possible words in the vocabulary. The model learns by 
+adjusting its weight based on how close its predictions are to the actual context words.
+
