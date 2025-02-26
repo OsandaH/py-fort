@@ -1,0 +1,23 @@
+• Number of layers  
+• Number of neurons per layer 
+• Activation Function  
+  o ReLU 
+  o Sigmoid 
+  o Tanh 
+  o Softmax 
+• Learning rate 
+• Optimizers or Gradient Decent Algorithms 
+  o Stochastic Gradient Decent (SGD) 
+  o Adaptive Moment Estimation (Adam) 
+  o Root Mean Square Propagation (RMSprop) 
+  o Adaptive Gradient Algorithm (Adagrad) 
+• Batch Size  
+• Number of Epochs 
+• Cost Function  
+  o Mean Squared Error 
+  o Mean Absolute Error 
+  o Cross Entropy Cost Function  
+  o Mean Squared Logarithmic Error  
+  o Binary Cross Entropy  
+  o Categorical Cross Entropy 
+• Dropout Rate 
