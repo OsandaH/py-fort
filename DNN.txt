@@ -50,13 +50,12 @@ Cost function
     Cost functions – Mean Squared Error, Mean Absolute Error, Cross Entropy Cost Function
 
 Feedforward
-    The process of passing input data through a neural network, layer by layer, to generate predictions. 
-    Each neuron computes a weighted sum of inputs, adds a bias, applies an activation function, and forwards 
-    the result to the next layer until reaching the output.  
+     Feedforward is the process of passing the input data through the neural network to obtain the output prediction.
+    The goal of feedforward is to make predictions based on the current weights of the neural network
 
 Backpropagation
-    A technique to minimize error by propagating the loss backward through the network. 
-    It calculates the gradient of the loss function, determining how each weight contributes to the error, 
-    and updates weights to improve accuracy.
+    Backpropagation (short for "backward propagation of errors") is the process used to update 
+    the weights of the neural network to minimize the difference between the predicted output 
+    and the actual target values.
 
 
