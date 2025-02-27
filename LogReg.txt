@@ -1,0 +1,44 @@
+Binary classification is a machine learning algorithm designed to classify data into one of two 
+classes or categories. It predicts a binary outcome where the result can be either positive (1) or 
+negative (0). 
+
+Logistic regression employs a logistic function which is known as the sigmoid function to map 
+predictions and their probabilities. This function transforms any real value into a range between 0 
+and 1, creating an S-shaped curve. And then all the features of the data set is taken into a linear 
+combination considering the weighted sum of all features.
+
+sigmoid fn h(z) = 1/ 1 + e^-z
+if sigmoid𝑧 ≥0.5 →class=1
+if sigmoid𝑧 <0.5 →class=0
+
+Cross-entropy Loss Function
+Cross-entropy loss function quantifies the dissimilarity between the predicted probabilities and the true labels.
+    yi is the true class label (0 or 1) of the i-th instance.
+    h(xi) is the predicted probability that the i-th instance belongs to class 1.
+    m is the number of data instances.
+
+
+Cross-entropy Cost Function
+The cross-entropy cost function  is used to refer to an average of the loss functions over an entire 
+training data.
+
+True Positive (TP):
+    actually positive and predicted as positive
+True Negative (TN):
+    actually negative and predicted as negative
+False Positive (FP):
+    actually negative but predicted as positive
+False Negative (FN):
+    actually positive but predicted as negative
+
+accuracy = (TP + TN) / All
+precision = TP / TP + FN
+Recall = TP / TP + FN
+F1 = 2*(precision*Recall)/(precision + Recall)
+
+
+In the One-vs-Rest method, each class is assigned as the positive class, while all other classes 
+are considered negative
+
+In the One-vs-One method, both positive and negative classes are defined for each classifier. 
+N*(N-1)/2
