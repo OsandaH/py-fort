@@ -17,6 +17,20 @@ Cross-entropy loss function quantifies the dissimilarity between the predicted p
     h(xi) is the predicted probability that the i-th instance belongs to class 1.
     m is the number of data instances.
 
+For wrong predictions, cross-entropy increases significantly, when a model makes a confident 
+but incorrect prediction, the loss grows rapidly. 
+
+If the true class is 1
+If the model predicts that the class is 0, the Loss is high. That means wrong 
+predictions provide high loss.  
+If the model predicts that the class is 1, the Loss is low. That means correct 
+predictions provide low loss. 
+
+If the true class is 0
+If the model predicts that the class is 1 (high ℎ(𝑧𝑖)), the Loss is high. That means wrong 
+predictions provide high loss. 
+If the model predicts that the class is 0 (low ℎ(𝑧𝑖)), the Loss is low. That means correct 
+predictions provide low loss. 
 
 Cross-entropy Cost Function
 The cross-entropy cost function  is used to refer to an average of the loss functions over an entire training data.
