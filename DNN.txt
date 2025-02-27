@@ -1,6 +1,6 @@
 Number of layers  
 Number of neurons per layer 
-Activation Function  
+Activation Function  (activation functions introduce non-linearity)
     ReLU 
     Sigmoid 
     Tanh 
