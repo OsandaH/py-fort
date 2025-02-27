@@ -653,3 +653,489 @@ print("Root Mean Squared Error (RMSE):", round_rmse)
 print("R-squared (R2):", round_r2)
 
 
+## DNN
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+import tensorflow as tf
+
+
+from sklearn.datasets import load_diabetes 
+from sklearn.model_selection import train_test_split 
+from sklearn.preprocessing import StandardScaler
+
+data = load_diabetes()
+X,y = data.data, data.target
+X_train, X_test, y_train, y_test = train_test_split(X,y, test_size = 0.2, random_state = 42)
+
+## Build DNN model ##
+
+model = tf.keras.Sequential([
+    tf.keras.layers.Dense(32,activation='relu',input_shape=(X_train.shape[1],)),
+    tf.keras.layers.Dropout(0.3),    
+    tf.keras.layers.Dense(16,activation='relu'),
+    tf.keras.layers.Dropout(0.3),    
+    tf.keras.layers.Dense(1)
+])
+
+# model = tf.keras.Sequential([
+#     tf.keras.layers.Dense(20,activation='tanh',input_shape=(X_train.shape[1],)),
+#     tf.keras.layers.Dense(10,activation='tanh'),
+#     tf.keras.layers.Dense(8,activation='tanh'),
+#     tf.keras.layers.Dense(4,activation='tanh'),
+#     tf.keras.layers.Dense(1)
+# ])
+
+## activation fn - tanh, softmax, relu
+
+# from tensorflow.keras import Sequential
+# from tensorflow.keras.layers import Dense,Input
+# model = Sequential([
+#     Input(shape = (X_train.shape[1],)),
+#     Dense(32, activation = 'relu'),
+#     Dense(16, activation = 'relu'),
+#     Dense(1)
+# ])
+
+# optimizer 
+optimizer = tf.keras.optimizers.Adam(learning_rate = 0.01)
+#optimizer = tf.keras.optimizers.SGD(learning_rate = 0.01)
+
+model.compile(optimizer = optimizer, loss = 'mean_squared_error', metrics = ['mae'])
+#model.compile(optimizer = optimizer, loss = 'mean_squared_logarithmic_error', metrics = ['mae'])
+
+### for classifiers 
+#model.compile(optimizer = optimizer, loss = 'binary_crossentropy', metrics = ['mae'])
+#model.compile(optimizer = optimizer, loss = 'categorical_crossentropy', metrics = ['mae'])
+#model.compile(optimizer = optimizer, loss = 'sparse_categorical_crossentropy', metrics = ['mae'])
+
+
+model.fit(X_train, y_train, epochs = 10, batch_size = 8, validation_data = (X_test, y_test))
+
+test_loss, test_mae = model.evaluate(X_test, y_test)
+print(f'Test Loss: {test_loss:.4f}, Test Mean Absolute Error: {test_mae:.4f}')
+
+# Make predictions on the test set
+y_pred = model.predict(X_test)
+
+# Plot Actual vs Predicted
+plt.figure(figsize=(8, 6))
+plt.scatter(y_pred, y_test)
+plt.ylabel('Actual Values')
+plt.xlabel('Predicted Values')
+plt.title('Actual vs Predicted Values')
+plt.grid(True)
+plt.plot([y_test.min(), y_test.max()],[y_test.min(), y_test.max()], 'g')
+plt.show()
+
+
+
+#### Hyperparameter Tuning ####
+
+import numpy as np
+import matplotlib.pyplot as plt
+import tensorflow as tf
+import keras_tuner as kt
+from sklearn.datasets import load_diabetes 
+from sklearn.model_selection import train_test_split 
+from sklearn.preprocessing import StandardScaler
+
+data = load_diabetes()
+X, y = data.data, data.target
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+def build_model(hp):
+    model = tf.keras.Sequential()
+    model.add(tf.keras.layers.Dense(hp.Choice('num_neurons', [32, 64, 128]),
+                                    activation=hp.Choice('activation', ['relu', 'sigmoid', 'tanh']),
+                                    input_shape=(X_train.shape[1],)))
+    model.add(tf.keras.layers.Dropout(hp.Choice('dropout_rate', [0.2, 0.3, 0.5])))
+    model.add(tf.keras.layers.Dense(hp.Choice('num_neurons', [32, 64, 128]),
+                                    activation=hp.Choice('activation', ['relu', 'sigmoid', 'tanh'])))
+    model.add(tf.keras.layers.Dropout(hp.Choice('dropout_rate', [0.2, 0.3, 0.5])))
+    model.add(tf.keras.layers.Dense(1))
+    
+    model.compile(optimizer=hp.Choice('optimizer', ['adam', 'sgd', 'rmsprop', 'adagrad']),
+                  loss='mean_squared_error',
+                  metrics=['mae'])
+    return model
+
+# Set up tuner
+tuner = kt.RandomSearch(
+    build_model,
+    objective='val_mae',
+    max_trials=10,
+    directory='tuning_results',
+    project_name='diabetes_regression'
+)
+
+# Run hyperparameter search
+tuner.search(X_train, y_train, epochs=50, validation_data=(X_test, y_test), batch_size=32, verbose=1)
+
+# Get best hyperparameters
+best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
+print(f"Best hyperparameters: {best_hps.values}")
+
+# Build and train the best model
+best_model = tuner.hypermodel.build(best_hps)
+history = best_model.fit(X_train, y_train, epochs=best_hps.get('epochs', 50), batch_size=best_hps.get('batch_size', 32), validation_data=(X_test, y_test), verbose=1)
+
+test_loss, test_mae = best_model.evaluate(X_test, y_test)
+print(f'Test Loss: {test_loss:.4f}, Test Mean Absolute Error: {test_mae:.4f}')
+
+# Make predictions
+y_pred = best_model.predict(X_test)
+
+# Plot Actual vs Predicted
+plt.figure(figsize=(8, 6))
+plt.scatter(y_pred, y_test)
+plt.ylabel('Actual Values')
+plt.xlabel('Predicted Values')
+plt.title('Actual vs Predicted Values')
+plt.grid(True)
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'g')
+plt.show()
+
+### Heat Map ###
+
+from sklearn.metrics import confusion_matrix, classification_report
+import numpy as np
+import seaborn as sns
+
+y_pred = np.argmax(model.predict(X_test), axis=1)
+
+conf_matrix = confusion_matrix(y_test, y_pred)
+
+plt.figure(figsize=(8, 6))
+sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', xticklabels=data.target_names, yticklabels=data.target_names)
+plt.xlabel('Predicted')
+plt.ylabel('True')
+plt.title('Confusion Matrix')
+plt.show()
+
+class_report = classification_report(y_test, y_pred, target_names=data.target_names)
+print("Classification Report:")
+print(class_report)
+print(conf_matrix)
+
+
+## Unsupervised Learning
+
+#### K-means Clustering ####
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.cluster import KMeans
+from sklearn.mixture import GaussianMixture
+from sklearn.metrics import silhouette_score
+
+df = pd.read_csv('Mall_Customers.csv')
+
+X = df[['Annual Income (k$)', 'Spending Score (1-100)']]
+
+k_values = [2, 3, 4, 5, 6, 7, 8]
+
+# Store silhouette scores
+silhouette_scores = []
+inertia_values = []
+
+# Perform K-means clustering for different values of k
+plt.figure(figsize=(18, 12))
+for i, k in enumerate(k_values, 1):
+    kmeans = KMeans(n_clusters=k, random_state=42)
+    labels = kmeans.fit_predict(X)
+    centroids = kmeans.cluster_centers_
+    
+    # Compute silhouette score
+    silhouette_scores.append(silhouette_score(X, labels))
+    inertia_values.append(kmeans.inertia_)
+    
+    plt.subplot(3, 3, i)
+    plt.scatter(X.iloc[:, 0], X.iloc[:, 1], c=labels, cmap='viridis', edgecolors='k', s=50, alpha=0.8)
+    plt.scatter(centroids[:, 0], centroids[:, 1], c='red', marker='X', s=200, label='Centroids')
+    plt.title(f'K-Means Clustering (k={k})')
+    plt.xlabel('Annual Income (k$)')
+    plt.ylabel('Spending Score (1-100)')
+    plt.legend()
+    
+plt.tight_layout()
+plt.show()
+
+# Find optimal k using Silhouette Score
+plt.figure(figsize=(8, 5))
+plt.plot(k_values, silhouette_scores, marker='o', linestyle='--', color='b')
+plt.xlabel('Number of Clusters (k)')
+plt.ylabel('Silhouette Score')
+plt.title('Silhouette Score vs. Number of Clusters')
+plt.show()
+
+optimal_k = k_values[np.argmax(silhouette_scores)]
+print(f"\nOptimal number of clusters based on Silhouette Score is: k={optimal_k}")
+
+
+# Find optimal k using Elbow Method
+plt.figure(figsize=(8, 5))
+plt.plot(k_values, inertia_values, marker='o', linestyle='--', color='r')
+plt.xlabel('Number of Clusters (k)')
+plt.ylabel('Inertia (WCSS)')
+plt.title('Elbow Method: Inertia vs. Number of Clusters')
+plt.show()
+
+optimal_k = k_values[np.diff(inertia_values, 2).argmin() + 1]
+print(f"\nOptimal number of clusters based on Elbow Method is: k={optimal_k}")
+
+
+
+
+df = pd.read_csv('Mall_Customers.csv')
+
+X = df[['Annual Income (k$)', 'Spending Score (1-100)']]
+
+k_values = [2, 3, 4, 5, 6, 7, 8]
+
+# Store silhouette scores
+silhouette_scores = []
+log_likelihood_values = []
+
+plt.figure(figsize=(18, 12))
+for i, k in enumerate(k_values, 1):
+    gmm = GaussianMixture(n_components=k, random_state=42)
+    labels = gmm.fit_predict(X)
+    centers = gmm.means_
+    
+    # Compute silhouette score
+    silhouette_scores.append(silhouette_score(X, labels))
+    log_likelihood_values.append(gmm.score(X) * len(X))
+    
+    plt.subplot(3, 3, i)
+    plt.scatter(X.iloc[:, 0], X.iloc[:, 1], c=labels, cmap='viridis', edgecolors='k', s=50, alpha=0.8)
+    plt.scatter(centers[:, 0], centers[:, 1], c='red', marker='X', s=200, label='Centroids')
+    
+    plt.title(f'GMM Clustering (k={k})')
+    plt.xlabel('Annual Income (k$)')
+    plt.ylabel('Spending Score (1-100)')
+    plt.legend()
+    
+plt.tight_layout()
+plt.show()
+
+# Find optimal k using Silhouette Score
+plt.figure(figsize=(8, 5))
+plt.plot(k_values, silhouette_scores, marker='o', linestyle='--', color='b')
+plt.xlabel('Number of Clusters (k)')
+plt.ylabel('Silhouette Score')
+plt.title('Silhouette Score vs. Number of Clusters')
+plt.show()
+
+optimal_k_silhouette = k_values[np.argmax(silhouette_scores)]
+print(f"\nOptimal number of clusters based on Silhouette Score (GMM) is: k={optimal_k_silhouette}")
+
+
+# Plot log-likelihood vs. number of clusters
+plt.figure(figsize=(8, 5))
+plt.plot(k_values, log_likelihood_values, marker='o', linestyle='--', color='purple')
+plt.xlabel('Number of Clusters (k)')
+plt.ylabel('Log-Likelihood')
+plt.title('Log-Likelihood vs. Number of Clusters')
+plt.show()
+
+optimal_k_likelihood = k_values[np.argmax(log_likelihood_values)]
+print(f"\nOptimal number of clusters based on Log-Likelihood (GMM) is: k={optimal_k_likelihood}")
+
+
+
+
+# dentify the three clusters in Iris dataset using k-means clustering and use  mutual information (MI) to validate the model.
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.mixture import GaussianMixture
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score, mutual_info_score
+from sklearn.datasets import load_iris
+
+iris = load_iris()
+X = iris.data
+y_true = iris.target
+
+# number of clusters
+n_clusters = 3
+
+# K-Means Clustering
+kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+kmeans_labels = kmeans.fit_predict(X)
+kmeans_mi = mutual_info_score(y_true, kmeans_labels)
+
+print(f'K-Means Mutual Information Score: {kmeans_mi:.4f}')
+
+# GMM Clustering
+gmm = GaussianMixture(n_components=n_clusters, random_state=42)
+gmm_labels = gmm.fit_predict(X)
+gmm_mi = mutual_info_score(y_true, gmm_labels)
+
+print(f'GMM Mutual Information Score: {gmm_mi:.4f}')
+
+## CNN
+
+import cv2 as cv
+import numpy as np
+import matplotlib.pyplot as plt
+
+img = cv.imread('bird.jpg')
+dimensions = img.shape
+print(dimensions) #Height #width #No of chanels
+
+img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
+plt.imshow(img)
+plt.title("Original Image")
+plt.axis("off")
+
+image_rgb = cv.cvtColor(img, cv.COLOR_BGR2RGB)
+red, green, blue = image_rgb[:,:,0], image_rgb[:,:,1], image_rgb[:,:,2]
+
+plt.imshow(red, cmap='Reds')
+plt.title("Red")
+plt.show()
+
+plt.imshow(green, cmap='Greens')
+plt.title("Green")
+plt.show()
+
+plt.imshow(blue, cmap='Blues')
+plt.title("Blue")
+plt.show()
+
+#Grayscale
+Gray_img = cv.cvtColor(img, cv.COLOR_BGR2GRAY) # Convert to RGB format
+plt.imshow(Gray_img, cmap = 'gray')
+plt.show()
+
+import tensorflow as tf
+from tensorflow.keras import layers, models
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.utils import to_categorical
+
+# Load and preprocess the MNIST dataset
+(train_images, train_labels), (test_images, test_labels) = mnist.load_data()
+train_images = train_images.reshape((60000, 28, 28, 1)).astype('float32') / 255
+test_images = test_images.reshape((10000, 28, 28, 1)).astype('float32') / 255
+
+train_labels = to_categorical(train_labels)
+test_labels = to_categorical(test_labels)
+
+# Define the CNN architecture
+model = models.Sequential()
+
+# Convolutional and pooling layers
+model.add(layers.ZeroPadding2D(padding=(2, 2), input_shape=(28, 28, 1))) 
+model.add(layers.Conv2D(32, (3, 3), strides=(1, 2), activation='relu'))
+model.add(layers.AveragePooling2D((3, 3)))
+
+model.add(layers.ZeroPadding2D(padding=(2, 2)))
+model.add(layers.Conv2D(64, (3, 3), strides=(1, 2), activation='relu'))
+model.add(layers.AveragePooling2D((3, 3)))
+
+model.add(layers.ZeroPadding2D(padding=(2, 2)))
+model.add(layers.Conv2D(64, (3, 3), strides=(1, 2), activation='relu'))
+
+# Fully connected layers
+model.add(layers.Flatten())
+model.add(layers.Dense(64, activation='relu'))
+model.add(layers.Dense(10, activation='softmax'))
+
+# Compile the model
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+# Train the model
+model.fit(train_images, train_labels, epochs=5, batch_size=64, verbose=0, validation_data=(test_images, test_labels))
+
+# Evaluate the model on the test set
+test_loss, test_acc = model.evaluate(test_images, test_labels)
+print(f'Test Accuracy: {test_acc * 100:.2f}%')
+
+
+#### CNN Hyperparameter Tuning ####
+
+import tensorflow as tf
+from tensorflow.keras import datasets, layers, models
+from tensorflow.keras.utils import to_categorical
+import keras_tuner as kt  # Hyperparameter tuning
+import numpy as np
+
+# Load the CIFAR-10 dataset
+(train_images, train_labels), (test_images, test_labels) = datasets.cifar10.load_data()
+
+# Normalize pixel values to be between 0 and 1
+train_images, test_images = train_images / 255.0, test_images / 255.0
+
+# One-hot encode labels
+train_labels = to_categorical(train_labels, 10)
+test_labels = to_categorical(test_labels, 10)
+
+# Define the hyperparameter tuning function
+def build_model(hp):
+    model = models.Sequential()
+
+    # Hyperparameter tuning for number of filters
+    filters_1 = hp.Choice('filters_1', [32, 64, 128, 256])
+    filters_2 = hp.Choice('filters_2', [32, 64, 128, 256])
+    
+    # Convolutional and pooling layers
+    model.add(layers.Conv2D(filters_1, (3, 3), activation='relu', input_shape=(32, 32, 3)))
+    model.add(layers.MaxPooling2D((2, 2)))
+    
+    model.add(layers.Conv2D(filters_2, (3, 3), activation='relu'))
+    model.add(layers.MaxPooling2D((2, 2)))
+
+    model.add(layers.Conv2D(filters_2, (3, 3), activation='relu'))
+
+    # Dropout to prevent overfitting
+    dropout_rate = hp.Choice('dropout_rate', [0.2, 0.3, 0.5])
+    model.add(layers.Dropout(dropout_rate))
+
+    # Fully connected layers
+    model.add(layers.Flatten())
+    model.add(layers.Dense(64, activation='relu'))
+    model.add(layers.Dense(10, activation='softmax'))  # 10 classes for CIFAR-10
+
+    # Hyperparameter tuning for learning rate
+    learning_rate = hp.Choice('learning_rate', [0.1, 0.01, 0.001, 0.0001])
+
+    # Compile the model
+    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate),loss='categorical_crossentropy',metrics=['accuracy'])
+    
+    return model
+
+# Use Keras Tuner to find the best hyperparameters
+tuner = kt.Hyperband(build_model,
+                     objective='val_accuracy',
+                     max_epochs=5,
+                     factor=3,
+                     directory='tuner_results',
+                     project_name='cifar10_tuning')
+
+# Perform hyperparameter search
+tuner.search(train_images, train_labels, epochs=10, validation_data=(test_images, test_labels), batch_size=64)
+
+# Get the best hyperparameters
+best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
+
+print(f"Best Hyperparameters:\n Filters 1: {best_hps.get('filters_1')}, "
+      f"Filters 2: {best_hps.get('filters_2')}, "
+      f"Dropout Rate: {best_hps.get('dropout_rate')}, "
+      f"Learning Rate: {best_hps.get('learning_rate')}")
+
+# Build and train the best model
+best_model = tuner.hypermodel.build(best_hps)
+history = best_model.fit(train_images, train_labels, epochs=15, batch_size=64, validation_data=(test_images, test_labels))
+
+# Evaluate on test data
+test_loss, test_acc = best_model.evaluate(test_images, test_labels, verbose=1 )
+print(f'Best Model Test Accuracy: {test_acc * 100:.2f}%')
+
+
