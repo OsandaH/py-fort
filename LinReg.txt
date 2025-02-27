@@ -1,0 +1,79 @@
+Regularized Linear Regression is used to prevent overfitting. Regularization techniques 
+penalizes overly complex models which helps to remove noise and outliers in the training 
+data by penalizing the coefficients that are not important or relevant for the prediction. 
+This helps to make the model more robust and reliable for making predictions.
+
+Regularization Term
+  Lasso uses absolute values, Ridge uses squared values of coefficients, and Elastic Net combines both.
+
+Effect on Coefficients
+  Lasso sets some coefficients to zero, Ridge shrinks them without eliminating, and Elastic Net balances both effects.
+
+Sparsity
+  Lasso promotes sparsity, Ridge does not, and Elastic Net promotes it but less than Lasso.
+
+Interpretability
+  Lasso is highly interpretable, Ridge is less interpretable, and Elastic Net is moderately interpretable.
+
+Hyperparameters
+  Lasso and Ridge need tuning for α, while Elastic Net needs tuning for both α and γ.
+
+Cross validation determines the accuracy of the machine learning model by partitioning the data 
+into training set and testing set multiple times. The dataset is split into several subsets or folds, 
+with one-fold serving as the validation set while the model is trained on the other folds. This 
+process is repeated multiple times, rotating through different folds as the validation set each time.
+
+Cross validation provides unbiased, fair comparisons between machine learning models by 
+evaluating each module under the same conditions across multiple data subsets. 
+
+K-Fold Cross-Validation is a method for assessing the effectiveness of machine learning models. 
+It ensures the model's ability to generalize to new, unseen data by repeatedly using various 
+subsets of the dataset for training and testing across multiple iterations. 
+
+In K-Fold Cross-Validation, the dataset is divided into k folds, and the model is trained and 
+tested k times, using a different fold as the testing set in each iteration. The final performance is 
+determined by averaging the evaluation metrics across all iterations. 
+
+
+Bias
+Bias in a learning algorithm arises from making overly simplistic assumptions. 
+
+Variance
+variance refers to the error resulting from the model's responsiveness to changes in the training data
+
+Underfitting
+Underfit models often have high bias, meaning they make strong assumptions about the data 
+that may not hold true.
+High bias can lead to systematic errors, where the model consistently misinterprets the data
+
+ Error_train > Error_test
+
+Techniques to Reduce Underfitting
+    Collect More Data
+    Increase Model Complexity
+    Add More Features
+    Hyperparameter Tuning
+
+
+Overfitting
+  Overfitting occurs when a model fails to accurately predict outcomes on testing data.
+
+  Error_train<Error_test
+
+Techniques to Reduce Overfitting
+    Regularization
+    Feature Selection
+    Reduce Model Complexity
+    Hyperparameter Tuning
+    Data Pruning
+
+
+Regularization
+    Lasso Regression (L1)
+    Ridge Regression (L2)
+    Elastic Regression
+
+
+
+
+
