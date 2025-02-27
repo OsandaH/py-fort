@@ -19,8 +19,10 @@ Cross-entropy loss function quantifies the dissimilarity between the predicted p
 
 
 Cross-entropy Cost Function
-The cross-entropy cost function  is used to refer to an average of the loss functions over an entire 
-training data.
+The cross-entropy cost function  is used to refer to an average of the loss functions over an entire training data.
+
+loss function quantifies the dissimilarity between the predicted probabilities and the true labels. It measures the error for a single data point.  
+Cost function is the average if the loss functions over the entire dataset. t penalizes the model more when it makes confident wrong predictions and less when it is uncertain or correct. 
 
 True Positive (TP):
     actually positive and predicted as positive
